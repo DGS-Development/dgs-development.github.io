@@ -1,0 +1,576 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+	<title>easy-javafx-gui-quickstart</title>
+	
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<link rel="stylesheet" href="assets/css/toastify-js.min.css" />
+	
+	<noscript>
+		<link rel="stylesheet" href="assets/css/noscript.css" />
+	</noscript>
+</head>
+
+<body class="is-preload">
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Header -->
+		<header id="header" class="alt">
+			<h1>easy-javafx-gui-quickstart</h1>
+			<p>Create your next JavaFX project</p>
+		</header>
+
+		<!-- Nav -->
+		<nav id="nav">
+			<ul>
+				<li><a href="#intro" class="active">Introduction</a></li>
+				<li><a href="#quickstart">Quickstart</a></li>
+			</ul>
+		</nav>
+
+		<!-- Main -->
+		<div id="main">
+			<!-- Introduction -->
+			<section id="intro" class="main">
+				<div class="spotlight">
+					<div class="content">
+						<header class="major">
+							<h2>Create your next JavaFX project in seconds.</h2>
+						</header>
+						<p>
+							Just enter your project-details below to download a Maven-project, including the latest
+							version of <a href="https://github.com/DGS-Development/easy-javafx-gui" target="_blank">
+								easy-javafx-gui</a> and <a href="https://github.com/JFXtras/jfxtras-styles" 
+								target="_blank">JMetro</a>, based on the 
+								<a href="https://github.com/DGS-Development/easy-javafx-gui-quickstart">
+								easy-javafx-gui-quickstart</a>-repository.
+						</p>
+						<p>
+							You need a Java 21 JDK to use this project. It is highly recommended to use a 
+							<a href="https://bell-sw.com/pages/downloads/" target="_blank">Liberica JDK</a>, 
+							which already includes recent JavaFX-components.
+						</p>
+					</div>
+					<!--
+					<span class="image"><img src="images/pic01.jpg" alt="" /></span>
+					-->
+				</div>
+			</section>
+
+			<!-- First Section -->
+			<section id="quickstart" class="main special">
+				<header class="major">
+					<h2>Quickstart</h2>
+				</header>
+
+				<div style="text-align: left;">
+					<h3>Please enter your project-details below.</h3>
+
+					<form onsubmit="event.preventDefault(); tryToCreateMavenProject();">
+						<label for="txtProjectName">Project-Name</label>
+						<input type="text" id="txtProjectName" placeholder="Awesome JavaFX project">
+
+						<label for="txtGroupId" style="margin-top: 0.85em;">group-id</label>
+						<input type="text" id="txtGroupId" placeholder="eu.dgs_development.code">
+
+						<label for="txtArtifactId" style="margin-top: 0.85em;">artifact-id</label>
+						<input type="text" id="txtArtifactId" placeholder="awesome-javafx-project">
+
+						<label for="txtVersion" style="margin-top: 0.85em;">version</label>
+						<input type="text" id="txtVersion" value="1.0.0-SNAPSHOT" placeholder="1.0.0-SNAPSHOT">
+
+						<label for="txtPackage" style="margin-top: 0.85em;">package</label>
+						<input type="text" id="txtPackage" placeholder="eu.dgs_development.code.quickstart"><br>
+
+						<input id="btnCreateMavenProject" class="button primary" style="font-size: 1.15em;" type="submit" value="Create Maven project 🚀">
+					</form>
+				</div>
+			</section>
+		</div>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<p class="copyright">
+				&copy; <a href="https://github.com/DGS-Development" target="_blank">DGS-Development</a><br>
+				Template designed by <a href="https://html5up.net" target="_blank">HTML5 UP</a>.
+			</p>
+		</footer>
+
+		<!-- Loading overlay (enable if required) -->
+		<!--
+		<div id="loadingOverlay" class="loading-overlay">
+			<div class="loading-overlay-inner">
+				<div class="loading-overlay-content">
+					<span class="loading-overlay-spinner"></span>
+					<div>
+						Please wait...
+					</div>
+				</div>
+			</div>
+		</div>
+		-->
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+	<script src="assets/js/toastify-js.js"></script>
+	<script src="assets/js/jszip.min.js"></script>
+
+	<script type="text/javascript">
+		(() => {
+			//----------------------------------------------------------------
+			//Utility functions.
+			//----------------------------------------------------------------
+
+			function utilShowErrorToast(errorMessage) {
+				Toastify({
+					text: errorMessage,
+					position: "center",
+					gravity: "top",
+					duration: 2000,
+					hideProgressBar: false,
+					stopOnFocus: true, // Prevents dismissing of toast on hover
+					style: {
+						background: "rgb(255, 95, 109)",
+					},
+					newWindow: true
+				}).showToast();
+			}
+
+			function utilSetElementBorderColor(element, color) {
+				if(color == null) {
+					element.style["border-color"] = "transparent";
+					element.style["border-width"] = "0px";
+				}
+				else {
+					element.style["border-color"] = color;
+					element.style["border-width"] = "0.1em";
+				}
+			}
+
+			function utilSetElementDisabled(element, disabled) {
+				element.disabled = disabled;
+			}
+
+			function utilSetElementVisible(element, visible) {
+				if(visible) {
+					element["display"] = "";
+				}
+				else {
+					element["display"] = "none";
+				}
+			}
+
+			function utilDownloadFromURL(data, fileName) {
+				const a = document.createElement('a');
+				a.href = data;
+				a.download = fileName;
+				
+				document.body.appendChild(a);
+
+				a.style.display = 'none';
+				a.click();
+				a.remove();
+			}
+
+			function utilDownloadBlob(data, fileName, mimeType) {
+				const blob = new Blob([data], {
+					type: mimeType
+				});
+
+				const url = window.URL.createObjectURL(blob)
+
+				utilDownloadFromURL(url, fileName)
+
+				setTimeout(() => window.URL.revokeObjectURL(url), 1000)
+			}
+
+			function utilExtractPathFileName(filePath) {
+				if(filePath.includes("/")) {
+					const lastSlashIndex = filePath.lastIndexOf("/");
+					
+					return filePath.substring(lastSlashIndex + 1);
+				}
+				else {
+					return filePath;
+				}
+			}
+
+			//----------------------------------------------------------------
+			//Actual logic.
+			//----------------------------------------------------------------
+
+			let processingStartTimestamp = 0;
+
+			//This is the public entry-function.
+			window.tryToCreateMavenProject = function() {
+				processingStartTimestamp = Date.now();
+
+				utilSetElementDisabled(document.querySelector("#btnCreateMavenProject"), true);
+
+				stepTryToReadProjectProperties();
+			};
+
+			//1) Parse properties.
+
+			function stepTryToReadProjectProperties() {
+				const errorBorderColor = "#ff5f6d";
+
+				let success = true;
+
+				let projectNameElement = document.querySelector("#txtProjectName");
+
+				if(projectNameElement.value.trim().length == 0) {
+					success = false;
+
+					utilSetElementBorderColor(projectNameElement, errorBorderColor);
+				}
+				else {
+					utilSetElementBorderColor(projectNameElement, null);
+				}
+
+				let groupIdElement = document.querySelector("#txtGroupId");
+
+				if(groupIdElement.value.trim().length == 0) {
+					success = false;
+
+					utilSetElementBorderColor(groupIdElement, errorBorderColor);
+				}
+				else {
+					utilSetElementBorderColor(groupIdElement, null);
+				}
+
+				let artifactIdElement = document.querySelector("#txtArtifactId");
+
+				if(artifactIdElement.value.trim().length == 0) {
+					success = false;
+
+					utilSetElementBorderColor(artifactIdElement, errorBorderColor);
+				}
+				else {
+					utilSetElementBorderColor(artifactIdElement, null);
+				}
+
+				let versionElement = document.querySelector("#txtVersion");
+
+				if(versionElement.value.trim().length == 0) {
+					success = false;
+
+					utilSetElementBorderColor(versionElement, errorBorderColor);
+				}
+				else {
+					utilSetElementBorderColor(versionElement, null);
+				}
+
+				let packageElement = document.querySelector("#txtPackage");
+
+				if(packageElement.value.trim().length == 0) {
+					success = false;
+
+					utilSetElementBorderColor(packageElement, errorBorderColor);
+				}
+				else {
+					utilSetElementBorderColor(packageElement, null);
+				}
+
+				if(!success) {
+					utilSetElementDisabled(document.querySelector("#btnCreateMavenProject"), false);
+
+					utilShowErrorToast("Please enter all required project details.");
+
+					window.location.hash = "#quickstart";
+				}
+				else {
+					stepTryToDownloadGitHubProject(projectNameElement, groupIdElement, artifactIdElement, 
+						versionElement, packageElement);
+				}
+			}
+
+			//2) Download latest project-version from GitHub. We bypass the GitHub CORS restriction by formwarding.
+
+			function stepTryToDownloadGitHubProject(projectNameElement, groupIdElement, artifactIdElement, versionElement, packageElement) {
+				const githubProjectUrl = "https://forwarding.dgs-development.eu/?get=https://github.com/DGS-Development/easy-javafx-gui-quickstart/archive/refs/heads/master.zip";
+
+				const httpRequest = new XMLHttpRequest();
+
+				httpRequest.open("GET", githubProjectUrl, true);
+				httpRequest.responseType = "blob";
+
+				httpRequest.onload = event => {
+					const zipFileBlob = httpRequest.response;
+
+					console.log("Downloaded ZIP file blob. Try to process ZIP file.");
+
+					stepTryToPatchDownloadedZipFile("easy-javafx-gui-quickstart-main", zipFileBlob, 
+						projectNameElement.value, groupIdElement.value, artifactIdElement.value, 
+						versionElement.value, packageElement.value);
+				};
+
+				httpRequest.onerror = event => {
+					utilSetElementDisabled(document.querySelector("#btnCreateMavenProject"), true);
+
+					utilShowErrorToast("Unable to download GitHub-repository code. Please try again later.");
+				};
+
+				httpRequest.send();
+			}
+
+			//3) We try to extract and patch the files from the ZIP file. This works, because we know the expected structure.
+
+			function stepTryToPatchDownloadedZipFile(zipRootDirectoryName, zipFileBlob, projectName, groupId, artifactId, version, package) {
+				//Create ZIP file instance for exisiting archive.
+				const jsZip = new JSZip();
+
+				jsZip.loadAsync(zipFileBlob).then(zipFileInstance => {
+					console.log("Processed ZIP file blob. Try to patch files.");
+
+					const fileObjectsToProcess = [];
+
+					//Add files to process.
+
+					zipFileInstance.folder(zipRootDirectoryName).forEach((relativePath, fileInstance) => {
+						if(!fileInstance.dir) {
+							//The file is not a directoy. Add as file to patch.
+
+							const tmpFileObject = {
+								relativePath: relativePath,
+								fileInstance: fileInstance
+							};
+
+							fileObjectsToProcess.push(tmpFileObject);
+
+							console.log("Add exising file to process:");
+							console.log(tmpFileObject);
+						}
+					});
+
+					//Process files.
+
+					const filesToProcess = fileObjectsToProcess.length;
+					let processedFiles = 0;
+					
+					const fileProcessingErrors = [];
+					
+					//Java-file specific package directories.
+					const newRootPackageDirectoryPath = package.replaceAll(".", "/");
+
+					//New ZIP-file container.
+					const targetZipFileInstance = new JSZip();
+
+					const checkProcessingState = () => {
+						if(processedFiles === filesToProcess) {
+							console.log("Processed all " + filesToProcess + " files.");
+
+							if(fileProcessingErrors.length === 0) {
+								//Try to download created ZIP file.
+
+								stepDownloadPatchedZipFile(targetZipFileInstance, projectName);
+							}
+							else {
+								utilSetElementDisabled(document.querySelector("#btnCreateMavenProject"), false);
+
+								console.error("Unable to create new ZIP file, because patch-errors occurred:");
+
+								fileProcessingErrors.forEach(tmpFileProcessingError => {
+									console.error(tmpFileProcessingError);
+								});
+
+								utilShowErrorToast("Unable to create new ZIP file, because patch-errors occurred.");
+							}
+						}
+						else {
+							console.log("Processed " + processedFiles + " of " + filesToProcess + " files.");
+						}
+					};
+
+					fileObjectsToProcess.forEach(tmpFileObject => {
+						let tmpFileDestinationPath = tmpFileObject.relativePath;
+
+						console.log("Try to process file. Path: " + tmpFileDestinationPath);
+
+						//Try to patch file.
+
+						let tmpFilePromise;
+
+						if(tmpFileObject.relativePath === "pom.xml") {
+							tmpFilePromise = zipFileUtilPatchPomFile(zipFileInstance, tmpFileObject.fileInstance, groupId, 
+								artifactId, version);
+						}
+						else if(tmpFileObject.relativePath.endsWith("Main.java")) {
+							const replacementObjectsArray = [];
+				
+							replacementObjectsArray.push({
+								key: 'setPackageScanPath("quickstart")', 
+								value: 'setPackageScanPath("' + package + '")'
+							});
+
+							tmpFilePromise = zipFileUtilPatchJavaFile(zipFileInstance, tmpFileObject.fileInstance, package, replacementObjectsArray);
+
+							const javaFileName = utilExtractPathFileName(tmpFileObject.relativePath);
+					
+							tmpFileDestinationPath = "src/main/java/" + newRootPackageDirectoryPath + "/" + javaFileName;
+						}
+						else if(tmpFileObject.relativePath.endsWith(".java")) {
+							tmpFilePromise = zipFileUtilPatchJavaFile(zipFileInstance, tmpFileObject.fileInstance, 
+								package);
+
+							const javaFileName = utilExtractPathFileName(tmpFileObject.relativePath);
+					
+							tmpFileDestinationPath = "src/main/java/" + newRootPackageDirectoryPath + "/" + javaFileName;
+						}
+						else if(tmpFileObject.relativePath.endsWith(".png")) {
+							//No need to patch. Just load the content.
+
+							tmpFilePromise = zipFileUtilLoadFileAsByteArray(zipFileInstance, tmpFileObject.fileInstance);
+						}
+						else {
+							//No need to patch. Just load the content.
+
+							tmpFilePromise = zipFileUtilLoadFileAsString(zipFileInstance, tmpFileObject.fileInstance);
+						}
+
+						tmpFilePromise.then(patchedFileContent => {
+							//Patch succeeded. Store file content.
+							
+							processedFiles++;
+
+							targetZipFileInstance.file(tmpFileDestinationPath, patchedFileContent);
+
+							checkProcessingState();
+						}, error => {
+							//Patch failed. Store error.
+
+							processedFiles++;
+							
+							fileProcessingErrors.push(error);
+
+							checkProcessingState();
+						});
+					});
+				}, error => {
+					utilSetElementDisabled(document.querySelector("#btnCreateMavenProject"), false);
+
+					console.error("Unable to process ZIP file (load failed):");
+					console.error(error);
+
+					utilShowErrorToast("Unable to process ZIP file (load failed).");
+				});
+			}
+
+			function zipFileUtilPatchPomFile(zipFileInstance, fileInstance, groupId, artifactId, version) {
+				const replacementObjectsArray = [];
+				
+				replacementObjectsArray.push({
+					key: "<groupId>eu.dgs_development.code.ejg</groupId>", 
+					value: "<groupId>" + groupId + "</groupId>"
+				});
+
+				replacementObjectsArray.push({
+					key: "<artifactId>easy-javafx-gui-quickstart</artifactId>", 
+					value: "<artifactId>" + artifactId + "</artifactId>"
+				});
+
+				replacementObjectsArray.push({
+					key: "<version>easy-javafx-gui-quickstart</version>", 
+					value: "<version>" + version + "</version>"
+				});
+
+				return zipFileUtilPatchFile(zipFileInstance, fileInstance, replacementObjectsArray);
+			}
+
+			function zipFileUtilPatchJavaFile(zipFileInstance, fileInstance, package, existingReplacementObjectsArray) {
+				const replacementObjectsArray = [];
+
+				if(existingReplacementObjectsArray != null) {
+					existingReplacementObjectsArray.forEach(tmpReplacementObject => {
+						replacementObjectsArray.push(tmpReplacementObject);
+					});
+				}
+				
+				replacementObjectsArray.push({
+					key: "package quickstart;", 
+					value: "package " + package + ";"
+				});
+
+				console.log(replacementObjectsArray);
+
+				return zipFileUtilPatchFile(zipFileInstance, fileInstance, replacementObjectsArray);
+			}
+
+			function zipFileUtilPatchFile(zipFileInstance, fileInstance, replacementObjectsArray) {
+				const patchPromise = new Promise((resolveFunction, rejectFunction) => {
+					zipFileUtilLoadFileAsString(zipFileInstance, fileInstance).then(fileContent => {
+						replacementObjectsArray.forEach(tmpReplacementObject => {
+							fileContent = fileContent.replaceAll(tmpReplacementObject.key, tmpReplacementObject.value);	
+						});
+
+						resolveFunction(fileContent);
+					}, error => {
+						rejectFunction(error);
+					});
+				});
+
+				return patchPromise;
+			}
+
+			function zipFileUtilLoadFileAsString(zipFileInstance, fileInstance) {
+				return zipFileUtilLoadFileContent(zipFileInstance, fileInstance, "string");
+			}
+
+			function zipFileUtilLoadFileAsByteArray(zipFileInstance, fileInstance) {
+				return zipFileUtilLoadFileContent(zipFileInstance, fileInstance, "uint8array");
+			}
+
+			function zipFileUtilLoadFileContent(zipFileInstance, fileInstance, contentType) {
+				const contentLoadPromise = new Promise((resolveFunction, rejectFunction) => {
+					zipFileInstance.file(fileInstance.name).async(contentType).then(fileContent => {
+						resolveFunction(fileContent);
+					}, error => {
+						rejectFunction(error);
+					});
+				});
+
+				return contentLoadPromise;
+			}
+
+			//4) Try to download the newly created "patched" ZIP-file.
+
+			function stepDownloadPatchedZipFile(zipFileInstance, zipFileName) {
+				const sanitizedZipFileName = zipFileName.replace(/[/\\?%*:|"<>]/g, '-');
+
+				console.log("Try to download patched ZIP file. Sanitized file-name: " + sanitizedZipFileName);
+
+				zipFileInstance.generateAsync({type: "uint8array"}).then(uint8array => {
+					utilDownloadBlob(uint8array, sanitizedZipFileName + ".zip", "application/octet-stream");
+
+					utilSetElementDisabled(document.querySelector("#btnCreateMavenProject"), false);
+				}, error => {
+					utilSetElementDisabled(document.querySelector("#btnCreateMavenProject"), false);
+
+					console.error("Unable to download patched ZIP file:");
+					console.error(error);
+
+					utilShowErrorToast("Unable to download patched ZIP file.");	
+				});
+			}
+		})();
+	</script>
+</body>
+
+</html>
